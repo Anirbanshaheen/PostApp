@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.postapp.R
 import com.example.postapp.databinding.FragmentHomeBinding
+import com.example.postapp.screens.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,11 +35,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+        initView()
         initClickListener()
     }
 
-    private fun initRecyclerView() {
+    private fun initView() {
         postAdapter = PostAdapter()
         with(binding!!.postRV) {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)

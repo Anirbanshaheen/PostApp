@@ -9,5 +9,6 @@ class PostRepository @Inject constructor(private val postAllAPI: PostAllAPI) {
 
     suspend fun getPost() = postAllAPI.getPost()
     suspend fun getPostDetails(id: Int) = postAllAPI.getPostDetails(id)
+    suspend fun getPostComment(id: Int) = postAllAPI.getPostComment(id)
 
 }

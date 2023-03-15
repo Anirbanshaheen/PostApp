@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.postapp.databinding.FragmentPosterDetailsBinding
 import com.example.postapp.models.postModel.PostModelItem
-import com.example.postapp.screens.home.HomeViewModel
+import com.example.postapp.screens.HomeViewModel
+import com.example.postapp.screens.home.PostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +21,8 @@ class PosterDetailsFragment : Fragment() {
     private var binding: FragmentPosterDetailsBinding? = null
     private val viewModel by viewModels<HomeViewModel>()
     private lateinit var model : PostModelItem
+
+    private var postCommentAdapter: PostCommentAdapter = PostCommentAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +49,16 @@ class PosterDetailsFragment : Fragment() {
 
         viewModel.getPostDetails(model.id).observe(viewLifecycleOwner, Observer {
             binding?.descriptionTV?.text = it.body
+        })
+
+        postCommentAdapter = PostCommentAdapter()
+        with(binding!!.postCommentRV) {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            adapter = postCommentAdapter
+        }
+
+        viewModel.getPostComment(model.id).observe(viewLifecycleOwner, Observer {
+            postCommentAdapter.initLoad(it)
         })
     }
 }
