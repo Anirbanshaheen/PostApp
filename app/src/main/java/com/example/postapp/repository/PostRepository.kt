@@ -8,5 +8,6 @@ import javax.inject.Inject
 class PostRepository @Inject constructor(private val postAllAPI: PostAllAPI) {
 
     suspend fun getPost() = postAllAPI.getPost()
+    suspend fun getPostDetails(id: Int) = postAllAPI.getPostDetails(id)
 
 }

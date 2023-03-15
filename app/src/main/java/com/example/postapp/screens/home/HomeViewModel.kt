@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.postapp.models.PostModel
+import com.example.postapp.models.postDetailsModel.PostDetailsModel
+import com.example.postapp.models.postModel.PostModel
 import com.example.postapp.repository.PostRepository
 import com.example.postapp.utils.ViewState
 import com.haroldadmin.cnradapter.NetworkResponse
@@ -31,6 +32,37 @@ class HomeViewModel @Inject constructor(private val postRepository: PostReposito
 
         viewModelScope.launch(Dispatchers.IO) {
             val response = postRepository.getPost()
+            withContext(Dispatchers.Main) {
+                viewState.value = ViewState.ProgressState(false)
+                when (response) {
+                    is NetworkResponse.Success -> {
+                        responseBody.value = response.body
+                    }
+                    is NetworkResponse.ServerError -> {
+                        val message = "দুঃখিত, এই মুহূর্তে আমাদের সার্ভার কানেকশনে সমস্যা হচ্ছে, কিছুক্ষণ পর আবার চেষ্টা করুন"
+                        viewState.value = ViewState.ShowMessage(message)
+                    }
+                    is NetworkResponse.NetworkError -> {
+                        val message = "দুঃখিত, এই মুহূর্তে আপনার ইন্টারনেট কানেকশনে সমস্যা হচ্ছে"
+                        viewState.value = ViewState.ShowMessage(message)
+                    }
+                    is NetworkResponse.UnknownError -> {
+                        val message = "কোথাও কোনো সমস্যা হচ্ছে, আবার চেষ্টা করুন"
+                        viewState.value = ViewState.ShowMessage(message)
+                    }
+                }
+            }
+        }
+        return responseBody
+    }
+
+    fun getPostDetails(id: Int): LiveData<PostDetailsModel> {
+
+        viewState.value = ViewState.ProgressState(true)
+        val responseBody = MutableLiveData<PostDetailsModel>()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = postRepository.getPostDetails(id)
             withContext(Dispatchers.Main) {
                 viewState.value = ViewState.ProgressState(false)
                 when (response) {

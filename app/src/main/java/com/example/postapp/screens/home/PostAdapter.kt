@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.postapp.databinding.ItemViewPostBinding
-import com.example.postapp.models.PostModelItem
+import com.example.postapp.models.postModel.PostModelItem
 
 class PostAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private val dataList: MutableList<PostModelItem> = mutableListOf()
-    var onItemClick: ((model:PostModelItem, position: Int) -> Unit)? = null
+    var onItemClick: ((model: PostModelItem, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemViewPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)

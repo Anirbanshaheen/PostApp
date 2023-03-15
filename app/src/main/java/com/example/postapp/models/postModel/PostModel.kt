@@ -1,3 +1,3 @@
-package com.example.postapp.models
+package com.example.postapp.models.postModel
 
 class PostModel : ArrayList<PostModelItem>()
